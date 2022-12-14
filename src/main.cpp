@@ -13,7 +13,8 @@ static const uint16_t screenWidth  = 320;
 static const uint16_t screenHeight = 240;
 // #define LV_USE_LOG 1
 static lv_disp_draw_buf_t draw_buf;
-static lv_color_t buf[ screenWidth * 10 ];
+static lv_color_t buf1[ screenWidth * 10 ];
+static lv_color_t buf2[ screenWidth * 10 ];
 
 TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight); /* TFT instance */
 
@@ -40,7 +41,7 @@ void lv_checkbox_set_state(lv_obj_t * checkbox, bool checked)
     
 }
 
-#if DEBUG==1
+
 void PS5_Debug()
 {
         if (ps5.Right()) Serial.println("Right Button");
@@ -91,7 +92,6 @@ void PS5_Debug()
         Serial.printf("Right Stick y at %d\n", ps5.RStickY());
         }
 }
-#endif
 
 
 
@@ -128,7 +128,7 @@ void setup()
         digitalWrite(TFT_BL, HIGH);
     }
 
-    lv_disp_draw_buf_init( &draw_buf, buf, NULL, screenWidth * 10 );
+    lv_disp_draw_buf_init( &draw_buf, buf1, buf2, screenWidth * 10 );
 
     /*Initialize the display*/
     /*初始化显示*/
@@ -149,10 +149,11 @@ void setup()
     indev_drv.type = LV_INDEV_TYPE_POINTER;
     // indev_drv.read_cb = my_touchpad_read;
     lv_indev_drv_register( &indev_drv );
-
-    ps5.begin("bc:c7:46:33:11:d2");
+    
     ui_init();
-    // lv_scr_load(ui_Screen2);
+    lv_scr_load(ui_Screen2);
+    ps5.begin("bc:c7:46:33:11:d2");
+    
     
 }
 
@@ -160,8 +161,14 @@ void setup()
 void loop()
 {
   lv_timer_handler(); /* let the GUI do its work 让 GUI 完成它的工作 */
+   if(ps5.isConnected()) Serial.println("Connected!");
     while (ps5.isConnected()) {
+        
+        #if DEBUG==1
+        PS5_Debug();
+        #endif
         lv_scr_load(ui_Screen1);
+        // lv_scr_load_anim(ui_Screen1, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, true);
         lv_timer_handler();
         lv_bar_set_value(ui_LStickX, ps5.LStickX(), LV_ANIM_ON);
         lv_bar_set_value(ui_LStickY, ps5.LStickY(), LV_ANIM_ON);
@@ -185,24 +192,9 @@ void loop()
         lv_checkbox_set_state(ui_LEFT, ps5.Left());
         lv_checkbox_set_state(ui_RIGHT, ps5.Right());
 
-         
-
-        // if (ps5.Charging()) Serial.println("The controller is charging"); //doesn't work
-        // if (ps5.Audio()) Serial.println("The controller has headphones attached"); //doesn't work
-        // if (ps5.Mic()) Serial.println("The controller has a mic attached"); //doesn't work
-
-        // Serial.printf("Battery Level : %d\n", ps5.Battery()); //doesn't work
-        // delay(10);
-        // tft.fillScreen(TFT_BLACK);
-        // Serial.println();
-        // ps5.setRumble(ps5.L2Value(), ps5.R2Value());
-        // tft.fillScreen(TFT_BLACK);
-    // This delay is to make the output more human readable
-    // Remove it when you're not trying to see the output
-    // delay(50);
-    
+        delay( 50 );
     }
-    delay( 15 );
+    
 }
 
 
