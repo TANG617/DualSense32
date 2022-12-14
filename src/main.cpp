@@ -156,7 +156,10 @@ void setup()
     
     
 }
-
+// static void newScreen()
+// {
+//     lv_scr_load_anim(ui_Screen1, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, true);
+// }
 
 void loop()
 {
@@ -167,8 +170,8 @@ void loop()
         #if DEBUG==1
         PS5_Debug();
         #endif
-        lv_scr_load(ui_Screen1);
-        // lv_scr_load_anim(ui_Screen1, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, true);
+        // lv_scr_load(ui_Screen1);
+        lv_scr_load_anim(ui_Screen1, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, true);
         lv_timer_handler();
         lv_bar_set_value(ui_LStickX, ps5.LStickX(), LV_ANIM_ON);
         lv_bar_set_value(ui_LStickY, ps5.LStickY(), LV_ANIM_ON);
@@ -192,7 +195,7 @@ void loop()
         lv_checkbox_set_state(ui_LEFT, ps5.Left());
         lv_checkbox_set_state(ui_RIGHT, ps5.Right());
 
-        delay( 50 );
+        delay( 5 );
     }
     
 }
