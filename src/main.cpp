@@ -161,10 +161,8 @@ void loop()
 {
   lv_timer_handler(); /* let the GUI do its work 让 GUI 完成它的工作 */
     while (ps5.isConnected()) {
-        // lv_scr_load(ui_Screen1);
+        lv_scr_load(ui_Screen1);
         lv_timer_handler();
-        
-
         lv_bar_set_value(ui_LStickX, ps5.LStickX(), LV_ANIM_ON);
         lv_bar_set_value(ui_LStickY, ps5.LStickY(), LV_ANIM_ON);
         lv_bar_set_value(ui_RStickX, ps5.RStickX(), LV_ANIM_ON);
