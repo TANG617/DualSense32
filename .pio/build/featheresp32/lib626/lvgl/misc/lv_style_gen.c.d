@@ -1,0 +1,25 @@
+.pio/build/featheresp32/lib626/lvgl/misc/lv_style_gen.c.o: \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_style_gen.c \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_style.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/../font/lv_font.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/../font/../lv_conf_internal.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/../font/../lv_conf_kconfig.h \
+ /Users/timli/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/dio_qspi/include/sdkconfig.h \
+ /Users/timli/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/esp_common/include/esp_attr.h \
+ .pio/libdeps/featheresp32/lvgl/lv_conf.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/../font/lv_symbol_def.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/../font/../misc/lv_area.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/../font/../misc/../lv_conf_internal.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_color.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/../lv_conf_internal.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_assert.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_log.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_types.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_mem.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_math.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_area.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_anim.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_txt.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_printf.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_bidi.h \
+ .pio/libdeps/featheresp32/lvgl/src/misc/lv_style_gen.h
