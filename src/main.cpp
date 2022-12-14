@@ -1,8 +1,11 @@
+#include "Wire.h"
 #include <lvgl.h>
 #include "T4_V13.h"
 #include <TFT_eSPI.h>
 #include "ui.h"
 #include<ps5Controller.h>
+// #define LV_COLOR_16_SWAP 1
+#define DEBUG 0
 
 /*Change to your screen resolution*/
 /*改变你的屏幕分辨率*/
@@ -23,79 +26,6 @@ void my_print(const char * buf)
 }
 #endif
 
-/* Display flushing 显示填充 */
-void my_disp_flush( lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p )
-{
-    uint32_t w = ( area->x2 - area->x1 + 1 );
-    uint32_t h = ( area->y2 - area->y1 + 1 );
-
-    tft.startWrite();
-    tft.setAddrWindow( area->x1, area->y1, w, h );
-    tft.pushColors( ( uint16_t * )&color_p->full, w * h, true );
-    tft.endWrite();
-
-    lv_disp_flush_ready( disp );
-}
-
-
-
-void setup()
-{
-    Serial.begin( 115200 ); /* prepare for possible serial debug 为可能的串行调试做准备*/
-
-    String LVGL_Arduino = "Hello Arduino! ";
-    LVGL_Arduino += String('V') + lv_version_major() + "." + lv_version_minor() + "." + lv_version_patch();
-
-    Serial.println( LVGL_Arduino );
-    Serial.println( "I am LVGL_Arduino" );
-
-    lv_init();
-
-#if LV_USE_LOG != 0
-    lv_log_register_print_cb( my_print ); /* register print function for debugging 注册打印功能以进行调试*/
-#endif
-
-    tft.begin();          /* TFT init TFT初始化*/
-    tft.setRotation( 1 ); /* Landscape orientation, flipped 设置方向*/
-    if (TFT_BL > 0) {
-        pinMode(TFT_BL, OUTPUT);
-        digitalWrite(TFT_BL, HIGH);
-    }
-
-    lv_disp_draw_buf_init( &draw_buf, buf, NULL, screenWidth * 10 );
-
-    /*Initialize the display*/
-    /*初始化显示*/
-    static lv_disp_drv_t disp_drv;
-    lv_disp_drv_init( &disp_drv );
-    /*Change the following line to your display resolution*/
-    /*将以下行更改为您的显示分辨率*/
-    disp_drv.hor_res = screenWidth;
-    disp_drv.ver_res = screenHeight;
-    disp_drv.flush_cb = my_disp_flush;
-    disp_drv.draw_buf = &draw_buf;
-    lv_disp_drv_register( &disp_drv );
-
-    /*Initialize the (dummy) input device driver*/
-    /*初始化（虚拟）输入设备驱动程序*/
-    static lv_indev_drv_t indev_drv;
-    lv_indev_drv_init( &indev_drv );
-    indev_drv.type = LV_INDEV_TYPE_POINTER;
-    // indev_drv.read_cb = my_touchpad_read;
-    lv_indev_drv_register( &indev_drv );
-
-
-
-    // lv_obj_t *label = lv_label_create( lv_scr_act() );
-    // lv_label_set_text( label, LVGL_Arduino.c_str() );
-    // lv_obj_align( label, LV_ALIGN_CENTER, 0, 0 );
-    
-    
-
-    ps5.begin("bc:c7:46:33:11:d2");
-    ui_init();
-
-}
 
 void lv_checkbox_set_state(lv_obj_t * checkbox, bool checked)
 {
@@ -110,38 +40,9 @@ void lv_checkbox_set_state(lv_obj_t * checkbox, bool checked)
     
 }
 
-
-
-void loop()
+#if DEBUG==1
+void PS5_Debug()
 {
-    lv_timer_handler(); /* let the GUI do its work 让 GUI 完成它的工作 */
-    // static lv_obj_t * bar1 = lv_bar_create(lv_scr_act());
-    // lv_obj_set_size(bar1, 200, 20);
-    // lv_obj_center(bar1);
-    // lv_bar_set_range(bar1, 0, 255);
-    // lv_bar_set_value(bar1, 0, LV_ANIM_ON);
-    
-    
-    if (ps5.isConnected()==false)
-    {
-      //  tft.drawString("Waiting...", 0, 0, 2);
-      //  lv_label_set_text( label,"Waiting..." );
-        Serial.println("Waiting...");
-       delay(1000);
-       
-      //  tft.fillScreen(TFT_BLACK);
-    }
-    
-    else
-    {
-        Serial.println("Connected!");
-        // tft.drawString("Connected!", 0, 2, 2);
-        delay(50);
-        // tft.fillScreen(TFT_BLACK);
-    }
-    
-    while (ps5.isConnected()) {
-        lv_timer_handler();
         if (ps5.Right()) Serial.println("Right Button");
         if (ps5.Down()) Serial.println("Down Button");
         if (ps5.Up()) Serial.println("Up Button");
@@ -189,6 +90,80 @@ void loop()
         if (ps5.RStickY()) {
         Serial.printf("Right Stick y at %d\n", ps5.RStickY());
         }
+}
+#endif
+
+
+
+/* Display flushing 显示填充 */
+void my_disp_flush( lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p )
+{
+    uint32_t w = ( area->x2 - area->x1 + 1 );
+    uint32_t h = ( area->y2 - area->y1 + 1 );
+
+    tft.startWrite();
+    tft.setAddrWindow( area->x1, area->y1, w, h );
+    tft.pushColors( ( uint16_t * )&color_p->full, w * h, true );
+    tft.endWrite();
+
+    lv_disp_flush_ready( disp );
+}
+
+
+
+
+void setup()
+{
+    Serial.begin( 115200 ); /* prepare for possible serial debug 为可能的串行调试做准备*/
+    lv_init();
+
+#if LV_USE_LOG != 0
+    lv_log_register_print_cb( my_print ); /* register print function for debugging 注册打印功能以进行调试*/
+#endif
+
+    tft.begin();          /* TFT init TFT初始化*/
+    tft.setRotation( 1 ); /* Landscape orientation, flipped 设置方向*/
+    if (TFT_BL > 0) {
+        pinMode(TFT_BL, OUTPUT);
+        digitalWrite(TFT_BL, HIGH);
+    }
+
+    lv_disp_draw_buf_init( &draw_buf, buf, NULL, screenWidth * 10 );
+
+    /*Initialize the display*/
+    /*初始化显示*/
+    static lv_disp_drv_t disp_drv;
+    lv_disp_drv_init( &disp_drv );
+    /*Change the following line to your display resolution*/
+    /*将以下行更改为您的显示分辨率*/
+    disp_drv.hor_res = screenWidth;
+    disp_drv.ver_res = screenHeight;
+    disp_drv.flush_cb = my_disp_flush;
+    disp_drv.draw_buf = &draw_buf;
+    lv_disp_drv_register( &disp_drv );
+
+    /*Initialize the (dummy) input device driver*/
+    /*初始化（虚拟）输入设备驱动程序*/
+    static lv_indev_drv_t indev_drv;
+    lv_indev_drv_init( &indev_drv );
+    indev_drv.type = LV_INDEV_TYPE_POINTER;
+    // indev_drv.read_cb = my_touchpad_read;
+    lv_indev_drv_register( &indev_drv );
+
+    ps5.begin("bc:c7:46:33:11:d2");
+    ui_init();
+    // lv_scr_load(ui_Screen2);
+    
+}
+
+
+void loop()
+{
+  lv_timer_handler(); /* let the GUI do its work 让 GUI 完成它的工作 */
+    while (ps5.isConnected()) {
+        // lv_scr_load(ui_Screen1);
+        lv_timer_handler();
+        
 
         lv_bar_set_value(ui_LStickX, ps5.LStickX(), LV_ANIM_ON);
         lv_bar_set_value(ui_LStickY, ps5.LStickY(), LV_ANIM_ON);
@@ -219,9 +194,9 @@ void loop()
         // if (ps5.Mic()) Serial.println("The controller has a mic attached"); //doesn't work
 
         // Serial.printf("Battery Level : %d\n", ps5.Battery()); //doesn't work
-        delay(10);
+        // delay(10);
         // tft.fillScreen(TFT_BLACK);
-        Serial.println();
+        // Serial.println();
         // ps5.setRumble(ps5.L2Value(), ps5.R2Value());
         // tft.fillScreen(TFT_BLACK);
     // This delay is to make the output more human readable
@@ -229,7 +204,7 @@ void loop()
     // delay(50);
     
     }
-    delay( 5 );
+    delay( 15 );
 }
 
 

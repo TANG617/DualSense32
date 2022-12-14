@@ -33,8 +33,12 @@ extern lv_obj_t *ui_L2;
 extern lv_obj_t *ui_R2;
 extern lv_obj_t *ui_L1;
 extern lv_obj_t *ui_R1;
+extern lv_obj_t *ui_Screen2;
+extern lv_obj_t *ui_Screen2_Label1;
+extern lv_obj_t *ui_Screen2_Image1;
 
 
+LV_IMG_DECLARE( ui_img_298733024);   // assets/gamecontroller.fill@2x.png
 
 
 
