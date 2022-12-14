@@ -1,6 +1,7 @@
 #include <lvgl.h>
 #include "T4_V13.h"
 #include <TFT_eSPI.h>
+#include<ps5Controller.h>
 
 /*Change to your screen resolution*/
 /*改变你的屏幕分辨率*/
@@ -34,6 +35,8 @@ void my_disp_flush( lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *colo
 
     lv_disp_flush_ready( disp );
 }
+
+
 
 void setup()
 {
@@ -82,15 +85,113 @@ void setup()
 
 
 
-    lv_obj_t *label = lv_label_create( lv_scr_act() );
-    lv_label_set_text( label, LVGL_Arduino.c_str() );
-    lv_obj_align( label, LV_ALIGN_CENTER, 0, 0 );
+    // lv_obj_t *label = lv_label_create( lv_scr_act() );
+    // lv_label_set_text( label, LVGL_Arduino.c_str() );
+    // lv_obj_align( label, LV_ALIGN_CENTER, 0, 0 );
+    
+    
+
+    ps5.begin("bc:c7:46:33:11:d2");
 
 }
+
+
 
 void loop()
 {
     lv_timer_handler(); /* let the GUI do its work 让 GUI 完成它的工作 */
+    static lv_obj_t * bar1 = lv_bar_create(lv_scr_act());
+    lv_obj_set_size(bar1, 200, 20);
+    lv_obj_center(bar1);
+    lv_bar_set_range(bar1, 0, 255);
+    lv_bar_set_value(bar1, 0, LV_ANIM_ON);
+    
+    
+    if (ps5.isConnected()==false)
+    {
+      //  tft.drawString("Waiting...", 0, 0, 2);
+      //  lv_label_set_text( label,"Waiting..." );
+        Serial.println("Waiting...");
+       delay(1000);
+       
+      //  tft.fillScreen(TFT_BLACK);
+    }
+    
+    else
+    {
+        Serial.println("Connected!");
+        // tft.drawString("Connected!", 0, 2, 2);
+        delay(50);
+        // tft.fillScreen(TFT_BLACK);
+    }
+    
+    while (ps5.isConnected()) {
+        lv_timer_handler();
+        if (ps5.Right()) Serial.println("Right Button");
+        if (ps5.Down()) Serial.println("Down Button");
+        if (ps5.Up()) Serial.println("Up Button");
+        if (ps5.Left()) Serial.println("Left Button");
+
+        if (ps5.Square()) Serial.println("Square Button");
+        if (ps5.Cross()) Serial.println("Cross Button");
+        if (ps5.Circle()) Serial.println("Circle Button");
+        if (ps5.Triangle()) Serial.println("Triangle Button");
+
+        if (ps5.UpRight()) Serial.println("Up Right");
+        if (ps5.DownRight()) Serial.println("Down Right");
+        if (ps5.UpLeft()) Serial.println("Up Left");
+        if (ps5.DownLeft()) Serial.println("Down Left");
+
+        if (ps5.L1()) Serial.println("L1 Button");
+        if (ps5.R1()) Serial.println("R1 Button");
+
+        if (ps5.Share()) Serial.println("Share Button");
+        if (ps5.Options()) Serial.println("Options Button");
+        if (ps5.L3()) Serial.println("L3 Button");
+        if (ps5.R3()) Serial.println("R3 Button");
+
+        if (ps5.PSButton()) Serial.println("PS Button");
+        if (ps5.Touchpad()) Serial.println("Touch Pad Button");
+
+        if (ps5.L2()) {
+        Serial.printf("L2 button at %d\n", ps5.L2Value());
+       
+        }
+        
+        if (ps5.R2()) {
+        Serial.printf("R2 button at %d\n", ps5.R2Value());
+        }
+
+        if (ps5.LStickX()) {
+        Serial.printf("Left Stick x at %d\n", ps5.LStickX());
+        }
+        if (ps5.LStickY()) {
+        Serial.printf("Left Stick y at %d\n", ps5.LStickY());
+        }
+        if (ps5.RStickX()) {
+        Serial.printf("Right Stick x at %d\n", ps5.RStickX());
+        }
+        if (ps5.RStickY()) {
+        Serial.printf("Right Stick y at %d\n", ps5.RStickY());
+        }
+
+         lv_bar_set_value(bar1, ps5.L2Value(), LV_ANIM_ON);
+
+        // if (ps5.Charging()) Serial.println("The controller is charging"); //doesn't work
+        // if (ps5.Audio()) Serial.println("The controller has headphones attached"); //doesn't work
+        // if (ps5.Mic()) Serial.println("The controller has a mic attached"); //doesn't work
+
+        // Serial.printf("Battery Level : %d\n", ps5.Battery()); //doesn't work
+        delay(10);
+        // tft.fillScreen(TFT_BLACK);
+        Serial.println();
+        // ps5.setRumble(ps5.L2Value(), ps5.R2Value());
+        // tft.fillScreen(TFT_BLACK);
+    // This delay is to make the output more human readable
+    // Remove it when you're not trying to see the output
+    // delay(50);
+    
+    }
     delay( 5 );
 }
 
@@ -166,7 +267,7 @@ void loop()
 // }
 // #define WAIT 1000
 
-// void Print(const char *format, ...)
+// void Serial.println(const char *format, ...)
 // {
     
 //     char loc_buf[64];
@@ -221,50 +322,50 @@ void loop()
     
 //     while (ps5.isConnected()) {
         
-//         if (ps5.Right()) Print("Right Button");
-//         if (ps5.Down()) Print("Down Button");
-//         if (ps5.Up()) Print("Up Button");
-//         if (ps5.Left()) Print("Left Button");
+//         if (ps5.Right()) Serial.println("Right Button");
+//         if (ps5.Down()) Serial.println("Down Button");
+//         if (ps5.Up()) Serial.println("Up Button");
+//         if (ps5.Left()) Serial.println("Left Button");
 
-//         if (ps5.Square()) Print("Square Button");
-//         if (ps5.Cross()) Print("Cross Button");
-//         if (ps5.Circle()) Print("Circle Button");
-//         if (ps5.Triangle()) Print("Triangle Button");
+//         if (ps5.Square()) Serial.println("Square Button");
+//         if (ps5.Cross()) Serial.println("Cross Button");
+//         if (ps5.Circle()) Serial.println("Circle Button");
+//         if (ps5.Triangle()) Serial.println("Triangle Button");
 
-//         if (ps5.UpRight()) Print("Up Right");
-//         if (ps5.DownRight()) Print("Down Right");
-//         if (ps5.UpLeft()) Print("Up Left");
-//         if (ps5.DownLeft()) Print("Down Left");
+//         if (ps5.UpRight()) Serial.println("Up Right");
+//         if (ps5.DownRight()) Serial.println("Down Right");
+//         if (ps5.UpLeft()) Serial.println("Up Left");
+//         if (ps5.DownLeft()) Serial.println("Down Left");
 
-//         if (ps5.L1()) Print("L1 Button");
-//         if (ps5.R1()) Print("R1 Button");
+//         if (ps5.L1()) Serial.println("L1 Button");
+//         if (ps5.R1()) Serial.println("R1 Button");
 
-//         if (ps5.Share()) Print("Share Button");
-//         if (ps5.Options()) Print("Options Button");
-//         if (ps5.L3()) Print("L3 Button");
-//         if (ps5.R3()) Print("R3 Button");
+//         if (ps5.Share()) Serial.println("Share Button");
+//         if (ps5.Options()) Serial.println("Options Button");
+//         if (ps5.L3()) Serial.println("L3 Button");
+//         if (ps5.R3()) Serial.println("R3 Button");
 
-//         if (ps5.PSButton()) Print("PS Button");
-//         if (ps5.Touchpad()) Print("Touch Pad Button");
+//         if (ps5.PSButton()) Serial.println("PS Button");
+//         if (ps5.Touchpad()) Serial.println("Touch Pad Button");
 
 //         if (ps5.L2()) {
-//         Print("L2 button at %d\n", ps5.L2Value());
+//         Serial.println("L2 button at %d\n", ps5.L2Value());
 //         }
 //         if (ps5.R2()) {
-//         Print("R2 button at %d\n", ps5.R2Value());
+//         Serial.println("R2 button at %d\n", ps5.R2Value());
 //         }
 
 //         if (ps5.LStickX()) {
-//         Print("Left Stick x at %d\n", ps5.LStickX());
+//         Serial.println("Left Stick x at %d\n", ps5.LStickX());
 //         }
 //         if (ps5.LStickY()) {
-//         Print("Left Stick y at %d\n", ps5.LStickY());
+//         Serial.println("Left Stick y at %d\n", ps5.LStickY());
 //         }
 //         if (ps5.RStickX()) {
-//         Print("Right Stick x at %d\n", ps5.RStickX());
+//         Serial.println("Right Stick x at %d\n", ps5.RStickX());
 //         }
 //         if (ps5.RStickY()) {
-//         Print("Right Stick y at %d\n", ps5.RStickY());
+//         Serial.println("Right Stick y at %d\n", ps5.RStickY());
 //         }
 
 //         // if (ps5.Charging()) Serial.println("The controller is charging"); //doesn't work
