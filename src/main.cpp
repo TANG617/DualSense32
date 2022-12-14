@@ -1,6 +1,7 @@
 #include <lvgl.h>
 #include "T4_V13.h"
 #include <TFT_eSPI.h>
+#include "ui.h"
 #include<ps5Controller.h>
 
 /*Change to your screen resolution*/
@@ -92,7 +93,21 @@ void setup()
     
 
     ps5.begin("bc:c7:46:33:11:d2");
+    ui_init();
 
+}
+
+void lv_checkbox_set_state(lv_obj_t * checkbox, bool checked)
+{
+    if(checked)
+    {
+      lv_obj_add_state(checkbox, LV_STATE_CHECKED);
+    }
+    else
+    {
+      lv_obj_clear_state(checkbox, LV_STATE_CHECKED);
+    }
+    
 }
 
 
@@ -100,11 +115,11 @@ void setup()
 void loop()
 {
     lv_timer_handler(); /* let the GUI do its work 让 GUI 完成它的工作 */
-    static lv_obj_t * bar1 = lv_bar_create(lv_scr_act());
-    lv_obj_set_size(bar1, 200, 20);
-    lv_obj_center(bar1);
-    lv_bar_set_range(bar1, 0, 255);
-    lv_bar_set_value(bar1, 0, LV_ANIM_ON);
+    // static lv_obj_t * bar1 = lv_bar_create(lv_scr_act());
+    // lv_obj_set_size(bar1, 200, 20);
+    // lv_obj_center(bar1);
+    // lv_bar_set_range(bar1, 0, 255);
+    // lv_bar_set_value(bar1, 0, LV_ANIM_ON);
     
     
     if (ps5.isConnected()==false)
@@ -175,7 +190,29 @@ void loop()
         Serial.printf("Right Stick y at %d\n", ps5.RStickY());
         }
 
-         lv_bar_set_value(bar1, ps5.L2Value(), LV_ANIM_ON);
+        lv_bar_set_value(ui_LStickX, ps5.LStickX(), LV_ANIM_ON);
+        lv_bar_set_value(ui_LStickY, ps5.LStickY(), LV_ANIM_ON);
+        lv_bar_set_value(ui_RStickX, ps5.RStickX(), LV_ANIM_ON);
+        lv_bar_set_value(ui_RStickY, ps5.RStickY(), LV_ANIM_ON);
+
+        lv_bar_set_value(ui_L2, ps5.L2Value(), LV_ANIM_ON);
+        lv_bar_set_value(ui_R2, ps5.R2Value(), LV_ANIM_ON);
+
+        lv_checkbox_set_state(ui_L1, ps5.L1());
+        lv_checkbox_set_state(ui_R1, ps5.R1());
+
+        lv_checkbox_set_state(ui_CROSS, ps5.Cross());
+        // lv_checkbox_set_state(ui_CROSS, ps5.Cross());
+        lv_checkbox_set_state(ui_CIRCLE, ps5.Circle());
+        lv_checkbox_set_state(ui_SQUARE, ps5.Square());
+        lv_checkbox_set_state(ui_TRIANGLE, ps5.Triangle());
+
+        lv_checkbox_set_state(ui_UP, ps5.Up());
+        lv_checkbox_set_state(ui_DOWN, ps5.Down());
+        lv_checkbox_set_state(ui_LEFT, ps5.Left());
+        lv_checkbox_set_state(ui_RIGHT, ps5.Right());
+
+         
 
         // if (ps5.Charging()) Serial.println("The controller is charging"); //doesn't work
         // if (ps5.Audio()) Serial.println("The controller has headphones attached"); //doesn't work
