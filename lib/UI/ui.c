@@ -30,7 +30,7 @@ lv_obj_t *ui_L1;
 lv_obj_t *ui_R1;
 lv_obj_t *ui_Screen2;
 lv_obj_t *ui_Screen2_Label1;
-lv_obj_t *ui_Screen2_Image1;
+lv_obj_t *ui_Screen2_Spinner1;
 
 ///////////////////// TEST LVGL SETTINGS ////////////////////
 #if LV_COLOR_DEPTH != 16
@@ -241,18 +241,19 @@ lv_obj_clear_flag( ui_Screen2, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
 ui_Screen2_Label1 = lv_label_create(ui_Screen2);
 lv_obj_set_width( ui_Screen2_Label1, LV_SIZE_CONTENT);  /// 1
 lv_obj_set_height( ui_Screen2_Label1, LV_SIZE_CONTENT);   /// 1
+lv_obj_set_x( ui_Screen2_Label1, 0 );
+lv_obj_set_y( ui_Screen2_Label1, 6 );
 lv_obj_set_align( ui_Screen2_Label1, LV_ALIGN_CENTER );
 lv_label_set_text(ui_Screen2_Label1,"\nConnecting PS5 Controller");
 
-ui_Screen2_Image1 = lv_img_create(ui_Screen2);
-lv_img_set_src(ui_Screen2_Image1, &ui_img_298733024);
-lv_obj_set_width( ui_Screen2_Image1, LV_SIZE_CONTENT);  /// 56
-lv_obj_set_height( ui_Screen2_Image1, LV_SIZE_CONTENT);   /// 35
-lv_obj_set_x( ui_Screen2_Image1, 0 );
-lv_obj_set_y( ui_Screen2_Image1, -25 );
-lv_obj_set_align( ui_Screen2_Image1, LV_ALIGN_CENTER );
-lv_obj_add_flag( ui_Screen2_Image1, LV_OBJ_FLAG_ADV_HITTEST );   /// Flags
-lv_obj_clear_flag( ui_Screen2_Image1, LV_OBJ_FLAG_SCROLLABLE );    /// Flags
+ui_Screen2_Spinner1 = lv_spinner_create(ui_Screen2,1000,90);
+lv_obj_set_width( ui_Screen2_Spinner1, 46);
+lv_obj_set_height( ui_Screen2_Spinner1, 80);
+lv_obj_set_x( ui_Screen2_Spinner1, 0 );
+lv_obj_set_y( ui_Screen2_Spinner1, -13 );
+lv_obj_set_align( ui_Screen2_Spinner1, LV_ALIGN_CENTER );
+lv_obj_add_state( ui_Screen2_Spinner1, LV_STATE_CHECKED );     /// States
+lv_obj_clear_flag( ui_Screen2_Spinner1, LV_OBJ_FLAG_CLICKABLE );    /// Flags
 
 }
 

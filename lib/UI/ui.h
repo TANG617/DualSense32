@@ -10,7 +10,17 @@
 extern "C" {
 #endif
 
+#if defined __has_include
+  #if __has_include("lvgl.h")
     #include "lvgl.h"
+  #elif __has_include("lvgl/lvgl.h")
+    #include "lvgl/lvgl.h"
+  #else
+    #include "lvgl.h"
+  #endif
+#else
+  #include "lvgl.h"
+#endif
 
 extern lv_obj_t *ui_Screen1;
 extern lv_obj_t *ui_LPanel;
@@ -35,10 +45,9 @@ extern lv_obj_t *ui_L1;
 extern lv_obj_t *ui_R1;
 extern lv_obj_t *ui_Screen2;
 extern lv_obj_t *ui_Screen2_Label1;
-extern lv_obj_t *ui_Screen2_Image1;
+extern lv_obj_t *ui_Screen2_Spinner1;
 
 
-LV_IMG_DECLARE( ui_img_298733024);   // assets/gamecontroller.fill@2x.png
 
 
 

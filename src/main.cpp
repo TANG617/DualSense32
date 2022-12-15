@@ -7,7 +7,7 @@
 #include <SPI.h>
 #include <nRF24L01.h>
 // #define LV_COLOR_16_SWAP 1
-#define DEBUG 0
+#define DEBUG 1
 
 /*Change to your screen resolution*/
 /*改变你的屏幕分辨率*/
@@ -42,7 +42,7 @@ void lv_checkbox_set_state(lv_obj_t * checkbox, bool checked)
     
 }
 
-#if DEBUG==1
+
 void PS5_Debug()
 {
         if (ps5.Right()) Serial.println("Right Button");
@@ -93,7 +93,6 @@ void PS5_Debug()
         Serial.printf("Right Stick y at %d\n", ps5.RStickY());
         }
 }
-#endif
 
 
 
@@ -152,9 +151,20 @@ void setup()
     // indev_drv.read_cb = my_touchpad_read;
     lv_indev_drv_register( &indev_drv );
 
-    ps5.begin("bc:c7:46:33:11:d2");
-    ui_init();
+    
+    // ui_init();
     // lv_scr_load(ui_Screen2);
+    #if DEBUG==1
+        Serial.printf("Ready\n");
+        lv_obj_t *label = lv_label_create( lv_scr_act() );
+        lv_label_set_text( label," LVGL_Arduino" );
+        lv_obj_align( label, LV_ALIGN_CENTER, 0, 0 );
+    #endif
+
+    // ui_init();
+    // lv_scr_load(ui_Screen2);
+    ps5.begin("bc:c7:46:33:11:d2");
+    //  ps5.begin("f8:4d:89:66:16:9d");//F8-4D-89-66-16-9D
     
 }
 
@@ -162,8 +172,15 @@ void setup()
 void loop()
 {
   lv_timer_handler(); /* let the GUI do its work 让 GUI 完成它的工作 */
+    #if DEBUG==1
+        if(ps5.isConnected()) Serial.printf("Connected\n");
+    #endif
+
     while (ps5.isConnected()) {
-        // lv_scr_load(ui_Screen1);
+        #if DEBUG==1
+        PS5_Debug();
+        #endif
+        lv_scr_load(ui_Screen1);
         lv_timer_handler();
         
 
@@ -275,7 +292,7 @@ void loop()
 //     tft.setTextFont(1);
 //     tft.setTextSize(1);
 
-//     ps5.begin("bc:c7:46:33:11:d2");//F8-4D-89-66-16-9D
+//     //F8-4D-89-66-16-9D
 //     // bc-c7-46-33-11-d2
     
 // }
