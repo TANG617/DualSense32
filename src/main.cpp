@@ -153,6 +153,7 @@ void setup()
     ui_init();
     lv_scr_load(ui_Screen2);
     ps5.begin("bc:c7:46:33:11:d2");
+    //  ps5.begin("f8:4d:89:66:16:9d");//F8-4D-89-66-16-9D
     
     
 }
