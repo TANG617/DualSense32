@@ -1,0 +1,76 @@
+cmake_minimum_required(VERSION 3.23)
+project(DS32)
+
+set(CMAKE_CXX_STANDARD 14)
+
+include_directories(include)
+include_directories(lib)
+include_directories(lib/Button2)
+include_directories(lib/Button2/examples)
+include_directories(lib/Button2/examples/LongpressHandler)
+include_directories(lib/Button2/examples/MultiHandler)
+include_directories(lib/Button2/examples/MultipleButtons)
+include_directories(lib/Button2/examples/SingleButton)
+include_directories(lib/Button2/examples/SingleButtonSimple)
+include_directories(lib/Button2/src)
+include_directories(lib/lvgl)
+include_directories(lib/ps5-esp32)
+include_directories(lib/ps5-esp32/examples)
+include_directories(lib/ps5-esp32/examples/ps5Connect)
+include_directories(lib/ps5-esp32/examples/ps5ReceiveData)
+include_directories(lib/ps5-esp32/examples/ps5SendData)
+include_directories(lib/ps5-esp32/examples/ps5ViewIncomingBits)
+include_directories(lib/ps5-esp32/src)
+include_directories(lib/ps5-esp32/src/osi)
+include_directories(lib/ps5-esp32/src/stack)
+include_directories(lib/RF24)
+include_directories(lib/UI)
+include_directories(src)
+
+add_executable(DS32
+        include/img_logo.h
+        include/T4_V13.h
+        lib/Button2/examples/LongpressHandler/LongpressHandler.ino
+        lib/Button2/examples/MultiHandler/MultiHandler.ino
+        lib/Button2/examples/MultipleButtons/MultipleButtons.ino
+        lib/Button2/examples/SingleButton/SingleButton.ino
+        lib/Button2/examples/SingleButtonSimple/SingleButtonSimple.ino
+        lib/Button2/src/Button2.cpp
+        lib/Button2/src/Button2.h
+        lib/Button2/keywords.txt
+        lib/Button2/library.properties
+        lib/Button2/LICENSE
+        lib/Button2/README.md
+        lib/lvgl/scripts/CHANGELOG_LAST.md
+        lib/ps5-esp32/examples/ps5Connect/ps5Connect.ino
+        lib/ps5-esp32/examples/ps5ReceiveData/ps5ReceiveData.ino
+        lib/ps5-esp32/examples/ps5SendData/ps5SendData.ino
+        lib/ps5-esp32/examples/ps5ViewIncomingBits/ps5ViewIncomingBits.ino
+        lib/ps5-esp32/src/osi/allocator.h
+        lib/ps5-esp32/src/stack/bt_types.h
+        lib/ps5-esp32/src/stack/btm_api.h
+        lib/ps5-esp32/src/stack/gap_api.h
+        lib/ps5-esp32/src/stack/hcidefs.h
+        lib/ps5-esp32/src/stack/l2c_api.h
+        lib/ps5-esp32/src/stack/l2cdefs.h
+        lib/ps5-esp32/src/ps5.c
+        lib/ps5-esp32/src/ps5.h
+        lib/ps5-esp32/src/ps5_int.h
+        lib/ps5-esp32/src/ps5_l2cap.c
+        lib/ps5-esp32/src/ps5_parser.c
+        lib/ps5-esp32/src/ps5_spp.c
+        lib/ps5-esp32/src/ps5Controller.cpp
+        lib/ps5-esp32/src/ps5Controller.h
+        lib/ps5-esp32/component.mk
+        lib/ps5-esp32/Kconfig
+        lib/ps5-esp32/keywords.txt
+        lib/ps5-esp32/library.properties
+        lib/ps5-esp32/README.md
+        lib/RF24/PlatformIO-RF24-1.4.5.tar.gz
+        lib/UI/ui.c
+        lib/UI/ui.h
+        lib/UI/ui_helpers.c
+        lib/UI/ui_helpers.h
+        lib/UI/ui_img_298733024.c
+        lib/README
+        src/main.cpp)
