@@ -83,7 +83,7 @@
  /Users/timli/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-matrix.h \
  /Users/timli/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-uart.h \
  /Users/timli/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-gpio.h \
- /Users/timli/.platformio/packages/framework-arduinoespressif32/variants/feather_esp32/pins_arduino.h \
+ /Users/timli/.platformio/packages/framework-arduinoespressif32/variants/esp32/pins_arduino.h \
  /Users/timli/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-touch.h \
  /Users/timli/.platformio/packages/framework-arduinoespressif32/cores/esp32/esp32-hal-dac.h \
  /Users/timli/.platformio/packages/framework-arduinoespressif32/tools/sdk/esp32/include/driver/include/driver/gpio.h \
