@@ -4,6 +4,8 @@
 #include <TFT_eSPI.h>
 #include "ui.h"
 #include<ps5Controller.h>
+#include <SPI.h>
+#include <nRF24L01.h>
 // #define LV_COLOR_16_SWAP 1
 #define DEBUG 0
 
