@@ -2,7 +2,7 @@
 .vscode/c_cpp_properties.json
 .vscode/launch.json
 .vscode/ipch
-.pio_1
+.pio
 .pio_bk
 .cache
 .build_cache
