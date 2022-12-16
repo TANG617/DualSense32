@@ -4,8 +4,30 @@
 #include <TFT_eSPI.h>
 #include "ui.h"
 #include<ps5Controller.h>
+#include "WiFi.h"
+#include <esp_now.h>
+//4C:EB:D6:43:41:34
 // #define LV_COLOR_16_SWAP 1
 #define DEBUG 0
+uint8_t broadcastAddress[] = {0xF4,0x12,0xFA,0xCF,0xA7,0x1C};//F4:12:FA:CF:A7:1C
+// Structure example to send data
+// Must match the receiver structure
+typedef struct struct_message {
+  char a[32];
+  int b;
+  float c;
+  bool d;
+} struct_message;
+// Create a struct_message called myData
+struct_message myData;
+
+esp_now_peer_info_t peerInfo;
+
+// callback when data is sent
+void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
+  Serial.print("\r\nLast Packet Send Status:\t");
+  Serial.println(status == ESP_NOW_SEND_SUCCESS ? "Delivery Success" : "Delivery Fail");
+}
 
 /*Change to your screen resolution*/
 /*改变你的屏幕分辨率*/
@@ -116,6 +138,27 @@ void setup()
 {
     Serial.begin( 115200 ); /* prepare for possible serial debug 为可能的串行调试做准备*/
     lv_init();
+    WiFi.mode(WIFI_MODE_STA);
+    // Init ESP-NOW
+  if (esp_now_init() != ESP_OK) {
+    Serial.println("Error initializing ESP-NOW");
+    return;
+  }
+
+  // Once ESPNow is successfully Init, we will register for Send CB to
+  // get the status of Trasnmitted packet
+  esp_now_register_send_cb(OnDataSent);
+  
+  // Register peer
+  memcpy(peerInfo.peer_addr, broadcastAddress, 6);
+  peerInfo.channel = 0;  
+  peerInfo.encrypt = false;
+  
+  // Add peer        
+  if (esp_now_add_peer(&peerInfo) != ESP_OK){
+    Serial.println("Failed to add peer");
+    return;
+  }
 
 #if LV_USE_LOG != 0
     lv_log_register_print_cb( my_print ); /* register print function for debugging 注册打印功能以进行调试*/
@@ -161,42 +204,62 @@ void setup()
 // {
 //     lv_scr_load_anim(ui_Screen1, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, true);
 // }
-
+static int b=0;
 void loop()
 {
-  lv_timer_handler(); /* let the GUI do its work 让 GUI 完成它的工作 */
-   if(ps5.isConnected()) Serial.println("Connected!");
-    while (ps5.isConnected()) {
+  // Set values to send
+  strcpy(myData.a, "THIS IS A CHAR");
+  myData.b = b++;
+  myData.c = 1.2;
+  myData.d = false;
+  
+  // Send message via ESP-NOW
+  esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
+   
+  if (result == ESP_OK) {
+    Serial.println("Sent with success");
+  }
+  else {
+    Serial.println("Error sending the data");
+  }
+  delay(1000);
+
+  
+  // lv_timer_handler(); /* let the GUI do its work 让 GUI 完成它的工作 */
+  // if(ps5.isConnected()) Serial.println("Connected!");
+  //   while (ps5.isConnected()) {
         
-        #if DEBUG==1
-        PS5_Debug();
-        #endif
-        // lv_scr_load(ui_Screen1);
-        lv_scr_load_anim(ui_Screen1, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, true);
-        lv_timer_handler();
-        lv_bar_set_value(ui_LStickX, ps5.LStickX(), LV_ANIM_ON);
-        lv_bar_set_value(ui_LStickY, ps5.LStickY(), LV_ANIM_ON);
-        lv_bar_set_value(ui_RStickX, ps5.RStickX(), LV_ANIM_ON);
-        lv_bar_set_value(ui_RStickY, ps5.RStickY(), LV_ANIM_ON);
+  //       #if DEBUG==1
+  //       PS5_Debug();
+  //       #endif
+  //       // lv_scr_load(ui_Screen1);
+  //       lv_scr_load_anim(ui_Screen1, LV_SCR_LOAD_ANIM_MOVE_TOP, 300, 0, true);
+  //       lv_timer_handler();
+  //       lv_bar_set_value(ui_LStickX, ps5.LStickX(), LV_ANIM_ON);
+  //       lv_bar_set_value(ui_LStickY, ps5.LStickY(), LV_ANIM_ON);
+  //       lv_bar_set_value(ui_RStickX, ps5.RStickX(), LV_ANIM_ON);
+  //       lv_bar_set_value(ui_RStickY, ps5.RStickY(), LV_ANIM_ON);
 
-        lv_bar_set_value(ui_L2, ps5.L2Value(), LV_ANIM_ON);
-        lv_bar_set_value(ui_R2, ps5.R2Value(), LV_ANIM_ON);
+  //       lv_bar_set_value(ui_L2, ps5.L2Value(), LV_ANIM_ON);
+  //       lv_bar_set_value(ui_R2, ps5.R2Value(), LV_ANIM_ON);
 
-        lv_checkbox_set_state(ui_L1, ps5.L1());
-        lv_checkbox_set_state(ui_R1, ps5.R1());
+  //       lv_checkbox_set_state(ui_L1, ps5.L1());
+  //       lv_checkbox_set_state(ui_R1, ps5.R1());
 
-        lv_checkbox_set_state(ui_CROSS, ps5.Cross());
-        // lv_checkbox_set_state(ui_CROSS, ps5.Cross());
-        lv_checkbox_set_state(ui_CIRCLE, ps5.Circle());
-        lv_checkbox_set_state(ui_SQUARE, ps5.Square());
-        lv_checkbox_set_state(ui_TRIANGLE, ps5.Triangle());
+  //       lv_checkbox_set_state(ui_CROSS, ps5.Cross());
+  //       // lv_checkbox_set_state(ui_CROSS, ps5.Cross());
+  //       lv_checkbox_set_state(ui_CIRCLE, ps5.Circle());
+  //       lv_checkbox_set_state(ui_SQUARE, ps5.Square());
+  //       lv_checkbox_set_state(ui_TRIANGLE, ps5.Triangle());
 
-        lv_checkbox_set_state(ui_UP, ps5.Up());
-        lv_checkbox_set_state(ui_DOWN, ps5.Down());
-        lv_checkbox_set_state(ui_LEFT, ps5.Left());
-        lv_checkbox_set_state(ui_RIGHT, ps5.Right());
+  //       lv_checkbox_set_state(ui_UP, ps5.Up());
+  //       lv_checkbox_set_state(ui_DOWN, ps5.Down());
+  //       lv_checkbox_set_state(ui_LEFT, ps5.Left());
+  //       lv_checkbox_set_state(ui_RIGHT, ps5.Right());
 
-        delay( 5 );
-    }
+  //       delay( 5 );
+  //       // Serial.println(WiFi.macAddress());
+  //       // delay(1000);
+  //   }
     
 }
