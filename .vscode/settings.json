@@ -1,6 +1,11 @@
 {
     "files.associations": {
         "ui.h": "c",
-        "lvgl.h": "c"
+        "lvgl.h": "c",
+        "ds32_ps5.h": "c",
+        "arduino.h": "c",
+        "tft_espi.h": "c",
+        "ds32_lvgl.h": "c"
     }
+    
 }
