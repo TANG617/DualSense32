@@ -79,7 +79,7 @@ void ps5Enable() {
   memcpy(hidCommand.data, hid_cmd_payload_ps5_enable, length);
 
   ps5_l2cap_send_hid(&hidCommand, length);
-  ps5SetLed(32, 32, 200);
+  ps5SetLed(200, 0, 0);
 }
 
 /*******************************************************************************

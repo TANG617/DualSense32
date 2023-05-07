@@ -93,9 +93,9 @@ enum ps5_control_packet_index {
   ps5_control_packet_index_small_rumble = 5,
   ps5_control_packet_index_large_rumble = 6,
 
-  ps5_control_packet_index_red = 7,
-  ps5_control_packet_index_green = 8,
-  ps5_control_packet_index_blue = 9,
+  ps5_control_packet_index_red = 44,
+  ps5_control_packet_index_green = 45,
+  ps5_control_packet_index_blue = 46,
 
   ps5_control_packet_index_flash_on_time = 10,
   ps5_control_packet_index_flash_off_time = 11
