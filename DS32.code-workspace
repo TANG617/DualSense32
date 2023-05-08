@@ -17,7 +17,12 @@
 			"sstream": "cpp",
 			"streambuf": "cpp",
 			"esp_system.h": "c",
-			"ps5.h": "c"
+			"ps5.h": "c",
+			"vector": "c",
+			"exception": "c",
+			"string_view": "c",
+			"functional": "c",
+			"system_error": "c"
 		}
 	}
 }

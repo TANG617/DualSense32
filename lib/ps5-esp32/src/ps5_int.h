@@ -65,7 +65,7 @@
 
 /** Size of the output report buffer for the Dualshock and Navigation
  * controllers */
-#define ps5_SEND_BUFFER_SIZE 77
+#define ps5_SEND_BUFFER_SIZE 78
 #define ps5_HID_BUFFER_SIZE 50
 
 /********************************************************************************/
@@ -93,9 +93,9 @@ enum ps5_control_packet_index {
   ps5_control_packet_index_small_rumble = 5,
   ps5_control_packet_index_large_rumble = 6,
 
-  ps5_control_packet_index_red = 44,
-  ps5_control_packet_index_green = 45,
-  ps5_control_packet_index_blue = 46,
+  ps5_control_packet_index_red = 46,
+  ps5_control_packet_index_green = 47,
+  ps5_control_packet_index_blue = 48,
 
   ps5_control_packet_index_flash_on_time = 10,
   ps5_control_packet_index_flash_off_time = 11
