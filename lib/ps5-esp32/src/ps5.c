@@ -202,7 +202,7 @@ uint32_t crc32(uint32_t crc, uint8_t const *p, size_t len, uint32_t polynomial) 
 **
 *******************************************************************************/
 void ps5Cmd(ps5_cmd_t cmd) {
-  uint8_t hidCommand[ps5_SEND_BUFFER_SIZE] = {0xA2, 0x31,0x02, 0xFF, 0xFF, 0xF7,0xFF,0xFF};//02,03,04,05
+  uint8_t hidCommand[ps5_SEND_BUFFER_SIZE] = {0xA2, 0x31,0x02, 0xFF, 0xFF, 0xF7,0xFF,0xFF};
   uint16_t length = ps5_SEND_BUFFER_SIZE;
   
   // hidCommand[2] = (output_sequence_counter++ << 4) | 0x0;
@@ -228,14 +228,14 @@ void ps5Cmd(ps5_cmd_t cmd) {
   // hidCommand.data[75] = (crcChecksum & 0x00FF0000) >> 16;
   // hidCommand.data[76] = (crcChecksum & 0xFF000000) >> 24;
 
-  hidCommand[46] = 100; // Red
-  hidCommand[47] = 100; // Green
-  hidCommand[48] = 100; // Blue
+  hidCommand[47-1] = 100; // Red
+  hidCommand[48-1] = 100; // Green
+  hidCommand[49-1] = 100; // Blue
   uint32_t crc = ~crc32(0xFFFFFFFF, (uint8_t const*)hidCommand, sizeof(hidCommand) - 4 /* Do not include the crc32 */,0xedb88320); // Note how the report type is also included in the output report
-  hidCommand[75] = crc & 0xFF;
-  hidCommand[76] = (crc >> 8) & 0xFF;
-  hidCommand[77] = (crc >> 16);
-  hidCommand[78] = (crc >> 24);
+  hidCommand[75-1] = crc & 0xFF;
+  hidCommand[76-1] = (crc >> 8) & 0xFF;
+  hidCommand[77-1] = (crc >> 16);
+  hidCommand[78-1] = (crc >> 24);
   ps5_l2cap_send_hid(hidCommand, length);
 }
 
