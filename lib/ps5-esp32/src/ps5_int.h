@@ -93,7 +93,7 @@ enum ps5_control_packet_index {
   ps5_control_packet_index_small_rumble = 5,
   ps5_control_packet_index_large_rumble = 6,
 
-  ps5_control_packet_index_red = 46,
+  ps5_control_packet_index_red = 45,
   ps5_control_packet_index_green = 47,
   ps5_control_packet_index_blue = 48,
 

@@ -11,9 +11,11 @@
 
 static const uint8_t hid_cmd_payload_ps5_enable[] = {0x43, 0x02};
 
+
 /********************************************************************************/
 /*                         L O C A L    V A R I A B L E S */
 /********************************************************************************/
+uint8_t output_sequence_counter = 0;
 
 static ps5_connection_callback_t ps5_connection_cb = NULL;
 static ps5_connection_object_callback_t ps5_connection_object_cb = NULL;
@@ -140,18 +142,19 @@ uint32_t ps5Compute(uint8_t* buffer) {
 **
 *******************************************************************************/
 void ps5Cmd(ps5_cmd_t cmd) {
-  hid_cmd_t hidCommand = {.data = {0x31, 0x02, 0xFF, 0xFF}};
-  uint16_t length = 78;
-
+  hid_cmd_t hidCommand = {.data = {0x00, 0x10, 0xFF, 0xF7}};
+  uint16_t length = 77;
+  
+  hidCommand.data[0] = (output_sequence_counter++ << 4) | 0x0;
   hidCommand.code = hid_cmd_code_set_report | hid_cmd_code_type_output;
   hidCommand.identifier = hid_cmd_identifier_ps5_control;
 
   hidCommand.data[ps5_control_packet_index_small_rumble] = cmd.smallRumble;  // Small Rumble
   hidCommand.data[ps5_control_packet_index_large_rumble] = cmd.largeRumble;  // Big rumble
 
-  hidCommand.data[ps5_control_packet_index_red] = cmd.r;    // Red
-  hidCommand.data[ps5_control_packet_index_green] = cmd.g;  // Green
-  hidCommand.data[ps5_control_packet_index_blue] = cmd.b;   // Blue
+  hidCommand.data[ps5_control_packet_index_red+1] = cmd.r;    // Red
+  hidCommand.data[ps5_control_packet_index_green+1] = cmd.g;  // Green
+  hidCommand.data[ps5_control_packet_index_blue+1] = cmd.b;   // Blue
 
   // Time to flash bright (255 = 2.5 seconds)
   hidCommand.data[ps5_control_packet_index_flash_on_time] = cmd.flashOn;
@@ -160,12 +163,13 @@ void ps5Cmd(ps5_cmd_t cmd) {
 
   int crcChecksum = ps5Compute(hidCommand.data);
 
-  hidCommand.data[74] = (crcChecksum & 0x000000FF);
-  hidCommand.data[75] = (crcChecksum & 0x0000FF00) >> 8;
-  hidCommand.data[76] = (crcChecksum & 0x00FF0000) >> 16;
-  hidCommand.data[77] = (crcChecksum & 0xFF000000) >> 24;
+  hidCommand.data[73] = (crcChecksum & 0x000000FF);
+  hidCommand.data[74] = (crcChecksum & 0x0000FF00) >> 8;
+  hidCommand.data[75] = (crcChecksum & 0x00FF0000) >> 16;
+  hidCommand.data[76] = (crcChecksum & 0xFF000000) >> 24;
 
   ps5_l2cap_send_hid(&hidCommand, length);
+  return hidCommand;
 }
 
 /*******************************************************************************
@@ -187,6 +191,16 @@ void ps5SetLed(uint8_t r, uint8_t g, uint8_t b) {
 
   ps5Cmd(cmd);
 }
+
+// hid_cmd_t ps5SetLed(uint8_t r, uint8_t g, uint8_t b) {
+//   ps5_cmd_t cmd = {0};
+
+//   cmd.r = r;
+//   cmd.g = g;
+//   cmd.b = b;
+
+//   return ps5Cmd(cmd);
+// }
 
 /*******************************************************************************
 **

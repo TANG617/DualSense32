@@ -17,6 +17,11 @@ void loop()
         PS5_Debug();
         #endif
         PS5_UI();
-        ps5.setLed(255,0,0);
+        // for(int i=0;i<78;i++)
+        // {
+        //     Serial.printf("%d",ps5SetLed(100,100,100)[i]);
+        // }
+        
+        
     }
 }

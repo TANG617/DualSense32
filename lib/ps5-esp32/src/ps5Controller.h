@@ -84,7 +84,10 @@ public:
   callback_t _callback_event = nullptr;
   callback_t _callback_connect = nullptr;
   callback_t _callback_disconnect = nullptr;
+  
 };
+
+
 
 #ifndef NO_GLOBAL_INSTANCES
 extern ps5Controller ps5;
