@@ -138,7 +138,7 @@ long ps5_l2cap_reconnect(void) {
 ** Returns          void
 **
 *******************************************************************************/
-void ps5_l2cap_send_hid( hid_cmd_t *hid_cmd, uint8_t len ) {
+void ps5_l2cap_send_hid( uint8_t *hid_cmd, uint8_t len ) {
     uint8_t result;
     BT_HDR *p_buf;
 
@@ -148,11 +148,20 @@ void ps5_l2cap_send_hid( hid_cmd_t *hid_cmd, uint8_t len ) {
         ESP_LOGE(ps5_TAG, "[%s] allocating buffer for sending the command failed", __func__);
     }
 
-    p_buf->length = len + ( sizeof(*hid_cmd) - sizeof(hid_cmd->data) );
+    p_buf->length = len;
     p_buf->offset = L2CAP_MIN_OFFSET;
 
     memcpy((uint8_t *)(p_buf + 1) + p_buf->offset, (uint8_t*)hid_cmd, p_buf->length);
-
+    for(int i=0;i<len;i++)
+    {
+        ESP_LOGE(ps5_TAG, "%d-->%02X",i,hid_cmd[i]);
+    }
+    ESP_LOGE(ps5_TAG, "################\n");
+    for(int i=0;i<len;i++)
+    {
+        ESP_LOGE(ps5_TAG, "%d-->%02X",i,p_buf->data[i]);
+    }
+    ESP_LOGE(ps5_TAG, "==============\n");
     if (l2cap_control_channel == 0) {
         ESP_LOGE(ps5_TAG, "[%s] l2cap_control_channel not initialized.", __func__);
     }

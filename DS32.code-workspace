@@ -22,7 +22,12 @@
 			"exception": "c",
 			"string_view": "c",
 			"functional": "c",
-			"system_error": "c"
+			"system_error": "c",
+			"arduino.h": "c",
+			"array": "cpp",
+			"string": "cpp",
+			"iomanip": "cpp",
+			"limits": "cpp"
 		}
 	}
 }

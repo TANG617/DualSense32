@@ -65,7 +65,7 @@
 
 /** Size of the output report buffer for the Dualshock and Navigation
  * controllers */
-#define ps5_SEND_BUFFER_SIZE 78
+#define ps5_SEND_BUFFER_SIZE 79
 #define ps5_HID_BUFFER_SIZE 50
 
 /********************************************************************************/
@@ -73,21 +73,21 @@
 /********************************************************************************/
 
 enum hid_cmd_code {
-  hid_cmd_code_set_report = 0x50,
+  hid_cmd_code_set_report = 0xA0,
   hid_cmd_code_type_output = 0x02,
   hid_cmd_code_type_feature = 0x03
 };
 
 enum hid_cmd_identifier {
   hid_cmd_identifier_ps5_enable = 0xF4,
-  hid_cmd_identifier_ps5_control = 0x11
+  hid_cmd_identifier_ps5_control = 0x31
 };
 
-typedef struct {
-  uint8_t code;
-  uint8_t identifier;
-  uint8_t data[ps5_SEND_BUFFER_SIZE];
-} hid_cmd_t;
+// typedef struct {
+//   uint8_t code;
+//   uint8_t identifier;
+//   uint8_t data[ps5_SEND_BUFFER_SIZE];
+// } hid_cmd_t;
 
 enum ps5_control_packet_index {
   ps5_control_packet_index_small_rumble = 5,
@@ -126,6 +126,6 @@ void sppInit();
 
 void ps5_l2cap_init_services();
 void ps5_l2cap_deinit_services();
-void ps5_l2cap_send_hid(hid_cmd_t *hid_cmd, uint8_t len);
+void ps5_l2cap_send_hid(uint8_t *hid_cmd, uint8_t len);
 
 #endif

@@ -101,7 +101,6 @@ void ps5Controller::_event_callback(
 
   memcpy(&This->data, &data, sizeof(ps5_t));
   memcpy(&This->event, &event, sizeof(ps5_event_t));
-
   if (This->_callback_event) {
     This->_callback_event();
   }

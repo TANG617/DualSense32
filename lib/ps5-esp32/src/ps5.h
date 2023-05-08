@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 
+
 extern uint8_t output_sequence_counter;
 /********************************************************************************/
 /*                                  T Y P E S */

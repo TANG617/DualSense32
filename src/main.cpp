@@ -1,9 +1,12 @@
 #include "DS32.h"
+#include "esp_system.h"
+#include "esp_log.h"
 void setup()
 {
     Serial.begin( 115200 ); /* prepare for possible serial debug 为可能的串行调试做准备*/
     Screen_LVGL_UI_init();
     ps5.begin("bc:c7:46:33:11:d2");
+    
     
     
 }
@@ -17,10 +20,6 @@ void loop()
         PS5_Debug();
         #endif
         PS5_UI();
-        // for(int i=0;i<78;i++)
-        // {
-        //     Serial.printf("%d",ps5SetLed(100,100,100)[i]);
-        // }
         
         
     }
