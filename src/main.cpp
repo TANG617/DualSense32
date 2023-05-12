@@ -79,10 +79,10 @@ void setup()
 
 double LF=0,LB=0,RF=0,RB=0;
 
-void Move(int DirectionX, int RotateSpeed , int Speed, int DirectionY, int Flip, int SpeedDirection)
+void Move(int DirectionY, int RotateSpeed , int Speed, int DirectionX, int Flip, int SpeedDirection)
 {
     //int MoveSpeed(-127-128), int DirectionX(-127-128), int DirectionY(-127-128), int RotateSpeed(-255-255)
-    double FinalSpeed = max(sqrt(pow(DirectionX*2,2)+pow(DirectionY*2,2)),(double)Speed)*SpeedDirection;
+    // double FinalSpeed = max(sqrt(pow(RotateSpeed*2,2)+pow(DirectionY*2,2)),(double)Speed)*SpeedDirection;
     LF=0;
     LB=0;
     RF=0;
@@ -93,10 +93,10 @@ void Move(int DirectionX, int RotateSpeed , int Speed, int DirectionY, int Flip,
     RF += DirectionY;
     RB += DirectionY;
 
-    LF -= DirectionX;
-    LB += DirectionX;
-    RF += DirectionX;
-    RB -= DirectionX;
+    LF += DirectionX;
+    LB -= DirectionX;
+    RF -= DirectionX;
+    RB += DirectionX;
 
     LF -= RotateSpeed;
     LB -= RotateSpeed;
@@ -108,7 +108,7 @@ void Move(int DirectionX, int RotateSpeed , int Speed, int DirectionY, int Flip,
     LB*=Flip;
     RB*=Flip;
     Norm();
-    Control((int)FinalSpeed);
+    Control((int)Speed);
 }
 
 void Norm()
@@ -166,7 +166,7 @@ void PS5_Control()
     int Speed,SpeedDirection;
     Speed  = abs(ps5.L2Value()-ps5.R2Value());
     SpeedDirection = ps5.L2Value()-ps5.R2Value() > 0 ? -1 : 1;   
-    Move(ps5.LStickX(),ps5.LStickY(),Speed,ps5.RStickX(),1,SpeedDirection);
+    Move(ps5.LStickY(),ps5.LStickX(),Speed,ps5.RStickX(),1,SpeedDirection);
     #ifdef DEBUG
     Serial.printf("%f,%f,%f,%f,Speed:%d,Dire:%d\n",LF,LB,RF,RB,Speed,SpeedDirection);
     #endif
