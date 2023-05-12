@@ -17,6 +17,5 @@ void loop()
         PS5_Debug();
         #endif
         PS5_UI();
-        ps5.setLed(255,0,0);
     }
 }
