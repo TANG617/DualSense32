@@ -14,6 +14,11 @@ void my_disp_flush( lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *colo
 void Screen_LVGL_UI_init();
 void PS5_UI();
 
+extern int pwmPinForward1 ;
+extern int pwmPinForward2 ;
+extern int pwmPinForward3 ;
+extern int pwmPinForward4 ;
+
 
 
 /*Change to your screen resolution*/

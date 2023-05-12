@@ -63,8 +63,15 @@ void PS5_UI()
         lv_bar_set_value(ui_RStickY, ps5.RStickY(), LV_ANIM_ON);
 
         lv_bar_set_value(ui_L2, ps5.L2Value(), LV_ANIM_ON);
+        analogWrite(pwmPinForward1, ps5.L2Value());
+        analogWrite(pwmPinForward2, ps5.L2Value());
+        analogWrite(pwmPinForward3, ps5.L2Value());
+        analogWrite(pwmPinForward4, ps5.L2Value());
         lv_bar_set_value(ui_R2, ps5.R2Value(), LV_ANIM_ON);
-
+        analogWrite(pwmPinForward1, ps5.R2Value());
+        analogWrite(pwmPinForward2, ps5.R2Value());
+        analogWrite(pwmPinForward3, ps5.R2Value());
+        analogWrite(pwmPinForward4, ps5.R2Value());
         lv_checkbox_set_state(ui_L1, ps5.L1());
         lv_checkbox_set_state(ui_R1, ps5.R1());
 
