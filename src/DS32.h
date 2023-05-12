@@ -19,6 +19,11 @@ extern int pwmPinForward2 ;
 extern int pwmPinForward3 ;
 extern int pwmPinForward4 ;
 
+void Norm();
+void Move(int DirectionX, int DirectionY, int Speed, int RotateSpeed, int Flip, int SpeedDirection);
+void Control(int Speed);
+void PS5_Control();
+
 
 
 // /*Change to your screen resolution*/
